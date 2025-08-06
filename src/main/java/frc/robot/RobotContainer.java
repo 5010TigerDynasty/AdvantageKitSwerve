@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -45,7 +44,6 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final Vision vision;
-  private final ElevatorSubsystem elevator = new ElevatorSubsystem();
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -61,10 +59,10 @@ public class RobotContainer {
         drive =
             new Drive(
                 new GyroIOPigeon2(),
-                new ModuleIOSparkTalon(0, TunerConstants.FrontLeft),
-                new ModuleIOSparkTalon(1, TunerConstants.FrontRight),
-                new ModuleIOSparkTalon(2, TunerConstants.BackLeft),
-                new ModuleIOSparkTalon(3, TunerConstants.BackRight));
+                new ModuleIOSparkTalon(TunerConstants.FrontLeft),
+                new ModuleIOSparkTalon(TunerConstants.FrontRight),
+                new ModuleIOSparkTalon(TunerConstants.BackLeft),
+                new ModuleIOSparkTalon(TunerConstants.BackRight));
 
         vision =
             new Vision(
@@ -135,9 +133,6 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    elevator.setDefaultCommand(
-        elevator.joystickCmd(
-            () -> controller.getLeftTriggerAxis() - controller.getRightTriggerAxis()));
     // Default command, normal field-relative drive
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(

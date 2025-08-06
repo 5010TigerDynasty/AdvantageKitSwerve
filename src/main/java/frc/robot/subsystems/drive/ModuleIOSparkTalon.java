@@ -93,39 +93,13 @@ public class ModuleIOSparkTalon implements ModuleIO {
   private final Debouncer turnConnectedDebounce = new Debouncer(0.5);
 
   public ModuleIOSparkTalon(
-      int module,
       SwerveModuleConstants<TalonFXConfiguration, TalonFXConfiguration, CANcoderConfiguration>
           constants) {
 
     this.constants = constants;
-    zeroRotation =
-        switch (module) {
-          case 0 -> frontLeftZeroRotation;
-          case 1 -> frontRightZeroRotation;
-          case 2 -> backLeftZeroRotation;
-          case 3 -> backRightZeroRotation;
-          default -> new Rotation2d();
-        };
-    driveTalon =
-        new TalonFX(
-            switch (module) {
-              case 0 -> frontLeftDriveCanId;
-              case 1 -> frontRightDriveCanId;
-              case 2 -> backLeftDriveCanId;
-              case 3 -> backRightDriveCanId;
-              default -> 0;
-            },
-            TunerConstants.DrivetrainConstants.CANBusName);
-    turnSpark =
-        new SparkMax(
-            switch (module) {
-              case 0 -> frontLeftTurnCanId;
-              case 1 -> frontRightTurnCanId;
-              case 2 -> backLeftTurnCanId;
-              case 3 -> backRightTurnCanId;
-              default -> 0;
-            },
-            MotorType.kBrushless);
+    zeroRotation = new Rotation2d();
+    driveTalon = new TalonFX(constants.DriveMotorId, TunerConstants.DrivetrainConstants.CANBusName);
+    turnSpark = new SparkMax(constants.SteerMotorId, MotorType.kBrushless);
 
     turnEncoder = turnSpark.getAbsoluteEncoder();
 
