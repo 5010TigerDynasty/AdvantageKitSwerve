@@ -42,11 +42,14 @@ public class Module {
     Logger.processInputs("Drive/Module" + Integer.toString(index), inputs);
 
     // Calculate positions for odometry
-    int sampleCount = inputs.odometryTimestamps.length; // All signals are sampled together
+    int sampleCount =
+        Math.min(
+            inputs.odometryDrivePositionsRad.length,
+            inputs.odometryTurnPositions.length); // All signals are sampled together
     odometryPositions = new SwerveModulePosition[sampleCount];
     for (int i = 0; i < sampleCount; i++) {
-      // double positionMeters = inputs.odometryDrivePositionsRad[i] * wheelRadiusMeters;
-      double positionMeters = 0.0;
+      double positionMeters = inputs.odometryDrivePositionsRad[i] * wheelRadiusMeters;
+
       Rotation2d angle = inputs.odometryTurnPositions[i];
       odometryPositions[i] = new SwerveModulePosition(positionMeters, angle);
     }
