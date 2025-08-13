@@ -165,7 +165,7 @@ public class ModuleIOSparkTalon implements ModuleIO {
     driveCurrent = driveTalon.getStatorCurrent();
 
     // Create odometry queues
-    timestampQueue = SparkOdometryThread.getInstance().makeTimestampQueue();
+    timestampQueue = PhoenixOdometryThread.getInstance().makeTimestampQueue();
     turnPositionQueue =
         SparkOdometryThread.getInstance().registerSignal(turnSpark, turnEncoder::getPosition);
   }
